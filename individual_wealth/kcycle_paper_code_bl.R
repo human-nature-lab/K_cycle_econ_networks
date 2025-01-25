@@ -40,8 +40,8 @@ resp_w2_original <- read_csv("hw3_resp_v3_*.csv")#Wave 2 respondent data
 
 #### Optional block
 #Renaming necessary columns
-resp_w2_original<-resp_w2_original%>% rename(village_code_w2 = village_code_w3)
-conn_w2_original<-conn_w2_original%>% rename(village_code_w2 = village_code_w3)
+resp_w2_original<-resp_w2_original%>% rename(village_code_w2 = village_code_W2)
+conn_w2_original<-conn_w2_original%>% rename(village_code_w2 = village_code_W2)
 ####
 
 
@@ -276,7 +276,7 @@ com_ind<-intersect(rownames(nodelist_w1),rownames(nodelist_w2))
 nodelist_w13c_use<-nodelist_w1[match(com_ind,rownames(nodelist_w1)),match(norm_list[1:(length(norm_list)-2)],colnames(nodelist_w1))]#
 colnames(nodelist_w13c_use)[3:length(colnames(nodelist_w13c_use))]<-paste0(colnames(nodelist_w13c_use)[3:length(colnames(nodelist_w13c_use))],"_W1")
 nodelist_w13c_use<-cbind(nodelist_w13c_use,nodelist_w2[match(com_ind,rownames(nodelist_w2)),match(norm_list[3:(length(norm_list)-2)],colnames(nodelist_w2))])#
-colnames(nodelist_w13c_use)[11:length(colnames(nodelist_w13c_use))]<-paste0(colnames(nodelist_w13c_use)[11:length(colnames(nodelist_w13c_use))],"_W3")
+colnames(nodelist_w13c_use)[11:length(colnames(nodelist_w13c_use))]<-paste0(colnames(nodelist_w13c_use)[11:length(colnames(nodelist_w13c_use))],"_W2")
 
 ns3_items_ez_ind_rev<-array(NA,dim=c(4,20))
 colnames(ns3_items_ez_ind_rev)<-c("HHW","MCA coordinate","Food insecurity","Shared toilet","Electricity","Radio","TV","Cell/mobile phone","Non mobile phone","No electronics","Separate rooms","Sleeping rooms","Flush (toilet type)","Furnace/firebox with a chimney (cooking stove)","Ceramic (floor)","Cement blocks (roof)","No facility (outdoors; toilet type)","Furnace/firebox without a chimney (cooking stove)","Earth/sand (floor)","There aren't windows")
@@ -376,18 +376,18 @@ for(i in 1:length(d_list3)){
   tempp1$vil_w<-vil_w
   nodelist_w13c_use2<-tempp1[complete.cases(tempp1),]
   
-  ns3_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3_W3))~as.numeric(as.character(item))+as.numeric(as.character(path3_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle3_W1))+as.numeric(as.character(vil_w))+(1|Village),
+  ns3_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3_W2))~as.numeric(as.character(item))+as.numeric(as.character(path3_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle3_W1))+as.numeric(as.character(vil_w))+(1|Village),
                                                data = nodelist_w13c_use2)))[2,1]
-  ns4_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4_W3))~as.numeric(as.character(item))+as.numeric(as.character(path4_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle4_W1))+as.numeric(as.character(vil_w))+(1|Village),
+  ns4_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4_W2))~as.numeric(as.character(item))+as.numeric(as.character(path4_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle4_W1))+as.numeric(as.character(vil_w))+(1|Village),
                                                data = nodelist_w13c_use2)))[2,1]
-  ns5_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5_W3))~as.numeric(as.character(item))+as.numeric(as.character(path5_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle5_W1))+as.numeric(as.character(vil_w))+(1|Village),
+  ns5_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5_W2))~as.numeric(as.character(item))+as.numeric(as.character(path5_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle5_W1))+as.numeric(as.character(vil_w))+(1|Village),
                                                data = nodelist_w13c_use2)))[2,1]
   
-  ns3_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3_W3))~as.numeric(as.character(item))+as.numeric(as.character(path3_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle3_W1))+as.numeric(as.character(vil_w))+(1|Village),
+  ns3_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3_W2))~as.numeric(as.character(item))+as.numeric(as.character(path3_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle3_W1))+as.numeric(as.character(vil_w))+(1|Village),
                                                data = nodelist_w13c_use2)))[2,5]
-  ns4_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4_W3))~as.numeric(as.character(item))+as.numeric(as.character(path4_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle4_W1))+as.numeric(as.character(vil_w))+(1|Village),
+  ns4_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4_W2))~as.numeric(as.character(item))+as.numeric(as.character(path4_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle4_W1))+as.numeric(as.character(vil_w))+(1|Village),
                                                data = nodelist_w13c_use2)))[2,5]
-  ns5_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5_W3))~as.numeric(as.character(item))+as.numeric(as.character(path5_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle5_W1))+as.numeric(as.character(vil_w))+(1|Village),
+  ns5_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5_W2))~as.numeric(as.character(item))+as.numeric(as.character(path5_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle5_W1))+as.numeric(as.character(vil_w))+(1|Village),
                                                data = nodelist_w13c_use2)))[2,5]
   
   
@@ -571,7 +571,7 @@ cyc_comp_w13<-network_factors_vil_w1[match(ind_w13,rownames(network_factors_vil_
 cyc_comp_w13<-cbind(cyc_comp_w13,"delta_W"=array(NA,dim=c(dim(cyc_comp_w13)[1],1)))
 
 temp<-cbind(network_factors_vil_w1$HHW[match(rownames(cyc_comp_w13),network_factors_vil_w1$Node_id)],
-            zm4_w3$HHW[match(rownames(cyc_comp_w13),rownames(network_factors_vil_w2))])
+            zm4_W2$HHW[match(rownames(cyc_comp_w13),rownames(network_factors_vil_w2))])
 temp2<-array(NA,dim=dim(temp)[1])
 
 for(i in 1:length(temp2)){
