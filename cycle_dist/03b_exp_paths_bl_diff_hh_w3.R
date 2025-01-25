@@ -3,16 +3,16 @@ library(intergraph)
 library(igraph)
 
 #-------------------------- Load data --------------------------------
-setwd("/home/stl22/palmer_scratch")
+setwd("/scratch")
 
 # Create a data path for saving cleaned / augmented data sets
-data_path <- "/home/stl22/palmer_scratch"
+data_path <- "/scratch"
 
 # Load node / edge list for borrowing ties
-load(paste(c(data_path, "/borrow_lend_diff_hh_undir_edge_node_list_w1w3_20240728.rda"), collapse=""))
+load(paste(c(data_path, "/borrow_lend_diff_hh_undir_edge_node_list_w1w3_*.rda"), collapse=""))
 
 # Load generated network attributes to access kcycle prevalence per village
-load(paste(c(data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_20240728.rda"), collapse=""))
+load(paste(c(data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_*.rda"), collapse=""))
 
 #------------------------------____--------------------------
 
@@ -87,4 +87,4 @@ borrow_lend_diff_hh_undir_pathdens_w3_sds <- as.data.frame(path_density)
 
 #------------------------ saving data ---------------------------
 # Saving cleaned data to data folder; saved files are ready for analysis.
-save(borrow_lend_diff_hh_undir_pathdens_w3_sds, file = "borrow_lend_diff_hh_undir_pathdens_w3_20240728.rda")
+save(borrow_lend_diff_hh_undir_pathdens_w3_sds, file = "borrow_lend_diff_hh_undir_pathdens_w3_*.rda")
