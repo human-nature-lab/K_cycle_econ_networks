@@ -272,11 +272,11 @@ network_factors_vil_w2<-network_factors_vil_w2[which(network_factors_vil_w2==T),
 
 #Regression
 
-com_ind<-intersect(rownames(zm4_w1),rownames(zm4_w3))
-zm4_w13c_use<-zm4_w1[match(com_ind,rownames(zm4_w1)),match(norm_list[1:(length(norm_list)-2)],colnames(zm4_w1))]#
-colnames(zm4_w13c_use)[3:length(colnames(zm4_w13c_use))]<-paste0(colnames(zm4_w13c_use)[3:length(colnames(zm4_w13c_use))],"_W1")
-zm4_w13c_use<-cbind(zm4_w13c_use,zm4_w3[match(com_ind,rownames(zm4_w3)),match(norm_list[3:(length(norm_list)-2)],colnames(zm4_w3))])#
-colnames(zm4_w13c_use)[11:length(colnames(zm4_w13c_use))]<-paste0(colnames(zm4_w13c_use)[11:length(colnames(zm4_w13c_use))],"_W3")
+com_ind<-intersect(rownames(nodelist_w1),rownames(nodelist_w2))
+nodelist_w13c_use<-nodelist_w1[match(com_ind,rownames(nodelist_w1)),match(norm_list[1:(length(norm_list)-2)],colnames(nodelist_w1))]#
+colnames(nodelist_w13c_use)[3:length(colnames(nodelist_w13c_use))]<-paste0(colnames(nodelist_w13c_use)[3:length(colnames(nodelist_w13c_use))],"_W1")
+nodelist_w13c_use<-cbind(nodelist_w13c_use,nodelist_w2[match(com_ind,rownames(nodelist_w2)),match(norm_list[3:(length(norm_list)-2)],colnames(nodelist_w2))])#
+colnames(nodelist_w13c_use)[11:length(colnames(nodelist_w13c_use))]<-paste0(colnames(nodelist_w13c_use)[11:length(colnames(nodelist_w13c_use))],"_W3")
 
 ns3_items_ez_ind_rev<-array(NA,dim=c(4,20))
 colnames(ns3_items_ez_ind_rev)<-c("HHW","MCA coordinate","Food insecurity","Shared toilet","Electricity","Radio","TV","Cell/mobile phone","Non mobile phone","No electronics","Separate rooms","Sleeping rooms","Flush (toilet type)","Furnace/firebox with a chimney (cooking stove)","Ceramic (floor)","Cement blocks (roof)","No facility (outdoors; toilet type)","Furnace/firebox without a chimney (cooking stove)","Earth/sand (floor)","There aren't windows")
@@ -310,114 +310,114 @@ i<-0
 for(i in 1:length(d_list3)){
   #i<-i+1
   #Wave 1
-  tempp1<-zm4_w1[match(com_ind,rownames(zm4_w1)),match(c(norm_list2,d_list3[i]),colnames(zm4_w1))]#
+  tempp1<-nodelist_w1[match(com_ind,rownames(nodelist_w1)),match(c(norm_list2,d_list3[i]),colnames(nodelist_w1))]#
   tp<-complete.cases(tempp1)
-  zm4_w1_use<-tempp1[tp,]
-  colnames(zm4_w1_use)[dim(zm4_w1_use)[2]]<-"item"
-  temp<-cbind(zm4_w1[match(com_ind,rownames(zm4_w1))[tp],match(c("HHW","Village"),colnames(zm4_w1))])#Here
+  nodelist_w1_use<-tempp1[tp,]
+  colnames(nodelist_w1_use)[dim(nodelist_w1_use)[2]]<-"item"
+  temp<-cbind(nodelist_w1[match(com_ind,rownames(nodelist_w1))[tp],match(c("HHW","Village"),colnames(nodelist_w1))])#Here
   vil_w<-array(NA,dim=dim(temp)[1])
   for(ij in 1:dim(temp)[1]){
     tp<-temp[which(temp[,2]==temp[ij,2]),1]
     vil_w[ij]<-mean(as.numeric(as.character(tp[which(is.na(tp)==F)])))
   }
-  zm4_w1_use$vil_w<-vil_w
+  nodelist_w1_use$vil_w<-vil_w
   
   #K-Path removed because it highlt correlates with kcycle , so it brings in multi-collinearity -- instead computing separate model for path
   ns3_items_ez_ind_rev[1,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3))~as.numeric(as.character(item))+as.numeric(as.character(path3))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w1_use)))[2,1]
+                                               data = nodelist_w1_use)))[2,1]
   ns4_items_ez_ind_rev[1,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4))~as.numeric(as.character(item))+as.numeric(as.character(path4))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w1_use)))[2,1]
+                                               data = nodelist_w1_use)))[2,1]
   ns5_items_ez_ind_rev[1,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5))~as.numeric(as.character(item))+as.numeric(as.character(path5))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w1_use)))[2,1]
+                                               data = nodelist_w1_use)))[2,1]
   
   ns3_items_pv_ind_rev[1,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3))~as.numeric(as.character(item))+as.numeric(as.character(path3))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w1_use)))[2,5]
+                                               data = nodelist_w1_use)))[2,5]
   ns4_items_pv_ind_rev[1,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4))~as.numeric(as.character(item))+as.numeric(as.character(path4))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w1_use)))[2,5]
+                                               data = nodelist_w1_use)))[2,5]
   ns5_items_pv_ind_rev[1,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5))~as.numeric(as.character(item))+as.numeric(as.character(path5))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w1_use)))[2,5]
+                                               data = nodelist_w1_use)))[2,5]
   
   #Wave 2
-  tempp1<-zm4_w3[match(com_ind,rownames(zm4_w3)),match(c(norm_list2,d_list3[i]),colnames(zm4_w1))]#
+  tempp1<-nodelist_w2[match(com_ind,rownames(nodelist_w2)),match(c(norm_list2,d_list3[i]),colnames(nodelist_w1))]#
   tp<-complete.cases(tempp1)
-  zm4_w3_use<-tempp1[tp,]
-  colnames(zm4_w3_use)[dim(zm4_w3_use)[2]]<-"item"
-  temp<-cbind(zm4_w1[match(com_ind,rownames(zm4_w1))[tp],match(c("HHW","Village"),colnames(zm4_w3))])#Here
+  nodelist_w2_use<-tempp1[tp,]
+  colnames(nodelist_w2_use)[dim(nodelist_w2_use)[2]]<-"item"
+  temp<-cbind(nodelist_w1[match(com_ind,rownames(nodelist_w1))[tp],match(c("HHW","Village"),colnames(nodelist_w2))])#Here
   vil_w<-array(NA,dim=dim(temp)[1])
   for(ij in 1:dim(temp)[1]){
     tp<-temp[which(temp[,2]==temp[ij,2]),1]
     vil_w[ij]<-mean(as.numeric(as.character(tp[which(is.na(tp)==F)])))
   }
-  zm4_w3_use$vil_w<-vil_w
+  nodelist_w2_use$vil_w<-vil_w
   
   ns3_items_ez_ind_rev[2,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3))~as.numeric(as.character(item))+as.numeric(as.character(path3))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w3_use)))[2,1]
+                                               data = nodelist_w2_use)))[2,1]
   ns4_items_ez_ind_rev[2,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4))~as.numeric(as.character(item))+as.numeric(as.character(path4))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w3_use)))[2,1]
+                                               data = nodelist_w2_use)))[2,1]
   ns5_items_ez_ind_rev[2,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5))~as.numeric(as.character(item))+as.numeric(as.character(path5))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w3_use)))[2,1]
+                                               data = nodelist_w2_use)))[2,1]
   
   ns3_items_pv_ind_rev[2,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3))~as.numeric(as.character(item))+as.numeric(as.character(path3))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w3_use)))[2,5]
+                                               data = nodelist_w2_use)))[2,5]
   ns4_items_pv_ind_rev[2,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4))~as.numeric(as.character(item))+as.numeric(as.character(path4))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w3_use)))[2,5]
+                                               data = nodelist_w2_use)))[2,5]
   ns5_items_pv_ind_rev[2,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5))~as.numeric(as.character(item))+as.numeric(as.character(path5))+as.numeric(as.character(Degree))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w3_use)))[2,5]
+                                               data = nodelist_w2_use)))[2,5]
   
   #Wave 3--1
-  tempp1<-cbind(zm4_w13c_use,zm4_w1[match(com_ind,rownames(zm4_w1)),match(d_list3[i],colnames(zm4_w1))])
+  tempp1<-cbind(nodelist_w13c_use,nodelist_w1[match(com_ind,rownames(nodelist_w1)),match(d_list3[i],colnames(nodelist_w1))])
   colnames(tempp1)[dim(tempp1)[2]]<-"item"
-  temp<-cbind(zm4_w13c_use[,match(c("HHW_W1","Village"),colnames(zm4_w13s_use))])#Here
+  temp<-cbind(nodelist_w13c_use[,match(c("HHW_W1","Village"),colnames(nodelist_w13s_use))])#Here
   vil_w<-array(NA,dim=dim(temp)[1])
   for(ij in 1:dim(temp)[1]){
     tp<-temp[which(temp[,2]==temp[ij,2]),1]
     vil_w[ij]<-mean(as.numeric(as.character(tp[which(is.na(tp)==F)])))
   }
   tempp1$vil_w<-vil_w
-  zm4_w13c_use2<-tempp1[complete.cases(tempp1),]
+  nodelist_w13c_use2<-tempp1[complete.cases(tempp1),]
   
   ns3_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3_W3))~as.numeric(as.character(item))+as.numeric(as.character(path3_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle3_W1))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13c_use2)))[2,1]
+                                               data = nodelist_w13c_use2)))[2,1]
   ns4_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4_W3))~as.numeric(as.character(item))+as.numeric(as.character(path4_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle4_W1))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13c_use2)))[2,1]
+                                               data = nodelist_w13c_use2)))[2,1]
   ns5_items_ez_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5_W3))~as.numeric(as.character(item))+as.numeric(as.character(path5_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle5_W1))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13c_use2)))[2,1]
+                                               data = nodelist_w13c_use2)))[2,1]
   
   ns3_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3_W3))~as.numeric(as.character(item))+as.numeric(as.character(path3_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle3_W1))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13c_use2)))[2,5]
+                                               data = nodelist_w13c_use2)))[2,5]
   ns4_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4_W3))~as.numeric(as.character(item))+as.numeric(as.character(path4_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle4_W1))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13c_use2)))[2,5]
+                                               data = nodelist_w13c_use2)))[2,5]
   ns5_items_pv_ind_rev[3,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5_W3))~as.numeric(as.character(item))+as.numeric(as.character(path5_W1))+as.numeric(as.character(Degree))+as.numeric(as.character(kcycle5_W1))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13c_use2)))[2,5]
+                                               data = nodelist_w13c_use2)))[2,5]
   
-
+  
   
   # #Wave 1+3
-  #tempp1<-zm4_w13ss[,c(3,7:14,18,45,d_list3[i])]
-  tempp1<-zm4_w13ss[,match(c(norm_list2,d_list3[i]),colnames(zm4_w13ss))]#
-  zm4_w13ss2<-tempp1[complete.cases(tempp1),]
-  colnames(zm4_w13ss2)[dim(zm4_w13ss2)[2]]<-"item"
-  temp<-cbind(zm4_w13ss[complete.cases(tempp1),match(c("HHW","Village"),colnames(zm4_w13ss))])#Here
+  #tempp1<-nodelist_w13ss[,c(3,7:14,18,45,d_list3[i])]
+  tempp1<-nodelist_w13ss[,match(c(norm_list2,d_list3[i]),colnames(nodelist_w13ss))]#
+  nodelist_w13ss2<-tempp1[complete.cases(tempp1),]
+  colnames(nodelist_w13ss2)[dim(nodelist_w13ss2)[2]]<-"item"
+  temp<-cbind(nodelist_w13ss[complete.cases(tempp1),match(c("HHW","Village"),colnames(nodelist_w13ss))])#Here
   vil_w<-array(NA,dim=dim(temp)[1])
   for(ij in 1:dim(temp)[1]){
     tp<-temp[which(temp[,2]==temp[ij,2]),1]
     vil_w[ij]<-mean(as.numeric(as.character(tp[which(is.na(tp)==F)])))
   }
-  zm4_w13ss2$vil_w<-vil_w
+  nodelist_w13ss2$vil_w<-vil_w
   
   ns3_items_ez_ind_rev[4,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3))~as.numeric(as.character(item))+as.numeric(as.character(path3))+as.numeric(as.character(Degree))+as.numeric(as.character(wave))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13ss2)))[2,1]
+                                               data = nodelist_w13ss2)))[2,1]
   ns4_items_ez_ind_rev[4,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4))~as.numeric(as.character(item))+as.numeric(as.character(path4))+as.numeric(as.character(Degree))+as.numeric(as.character(wave))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13ss2)))[2,1]
+                                               data = nodelist_w13ss2)))[2,1]
   ns5_items_ez_ind_rev[4,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5))~as.numeric(as.character(item))+as.numeric(as.character(path5))+as.numeric(as.character(Degree))+as.numeric(as.character(wave))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13ss2)))[2,1]
+                                               data = nodelist_w13ss2)))[2,1]
   
   ns3_items_pv_ind_rev[4,i]<-coef(summary(lmer(as.numeric(as.character(kcycle3))~as.numeric(as.character(item))+as.numeric(as.character(path3))+as.numeric(as.character(Degree))+as.numeric(as.character(wave))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13ss2)))[2,5]
+                                               data = nodelist_w13ss2)))[2,5]
   ns4_items_pv_ind_rev[4,i]<-coef(summary(lmer(as.numeric(as.character(kcycle4))~as.numeric(as.character(item))+as.numeric(as.character(path4))+as.numeric(as.character(Degree))+as.numeric(as.character(wave))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13ss2)))[2,5]
+                                               data = nodelist_w13ss2)))[2,5]
   ns5_items_pv_ind_rev[4,i]<-coef(summary(lmer(as.numeric(as.character(kcycle5))~as.numeric(as.character(item))+as.numeric(as.character(path5))+as.numeric(as.character(Degree))+as.numeric(as.character(wave))+as.numeric(as.character(vil_w))+(1|Village),
-                                               data = zm4_w13ss2)))[2,5]
+                                               data = nodelist_w13ss2)))[2,5]
   
   
   #}
@@ -475,7 +475,7 @@ myColor<-colorRampPalette(c("#cb181d","white", "#33a02c"))(19)
 
 
 pdf('regression_items_bl.pdf',width=9,height=7)
-pheatmap(effect_size_phen_sig_plot/0.15,annotation_row = NULL,annotation_names_row = T,
+pheatmap(effect_size_phen_sig_plot,annotation_row = NULL,annotation_names_row = T,
          labels_row = rownames(effect_size_phen_sig_plot),legend = T,fontsize_number = 15,
          border_color = "#EEEEEE",na_col = "white",fontsize_col = 10,angle_col = 90,fontsize_row = 10,
          color=myColor,breaks=myBreaks,display_numbers = t(disp_fdr),number_color = "black",treeheight_col = 0,
@@ -490,7 +490,7 @@ rowr<-rownames(effect_size_phen_sig_plot)[ind_reg]
 rowr[5:8]<-c("Toilet type","Cooking stove type","Floor type","Roof type")
 
 pdf('figure_path/figure_1a.pdf',width=5,height=6)#was ind_phen[4:6]
-pheatmap(effect_size_phen_sig_plot[ind_reg,ind_phen]/0.15,annotation_row = NULL,annotation_names_row = T,
+pheatmap(effect_size_phen_sig_plot[ind_reg,ind_phen],annotation_row = NULL,annotation_names_row = T,
          labels_row = rowr,labels_col = colnames(effect_size_phen_sig_plot)[ind_phen],legend = T,fontsize_number = 15,
          border_color = "#EEEEEE",na_col = "white",fontsize_col = 10,angle_col = 90,fontsize_row = 10,
          color=myColor,breaks=myBreaks,display_numbers = t(disp_fdr[ind_phen,ind_reg]),number_color = "black",treeheight_col = 0,
@@ -534,7 +534,7 @@ rownames(effect_size_phen_sig_plot)[1:2]<-c("Household Wealth Index","MCA coordi
 rownames(effect_size_phen_sig_plot)[3:dim(items_ind_ez_rev)[2]]<-colnames(items_ind_ez_rev)[3:dim(items_ind_ez_rev)[2]]
 rownames(effect_size_phen_sig_plot)[8]<-"No phone"
 
-myb2<-c(0.0000000125,0.0012500000,0.0065105438,0.0112500000,0.0143750000,0.0179000000,0.0342018138,0.0720843541,0.15,1.5)#*3.81/0.15
+myb2<-c(0.0000000125,0.0012500000,0.0065105438,0.0112500000,0.0143750000,0.0179000000,0.0342018138,0.0720843541,0.15,1.5)#
 myBreaks<-c(myb2[c(length(myb2):-1:1)]*-1,myb2)
 myColor<-colorRampPalette(c("#cb181d","white", "#33a02c"))(19)
 
