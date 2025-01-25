@@ -12,12 +12,6 @@ library(ggplot2)
 # The aim of this file is to investigate the observed cycles in undirected friend vs
 # borrow-lend networks where ties in the same household have been removed from the cycles analysis.
 
-# This file calculates the observed number of cycles using data source 1 and 2,
-# meaning the data includes individuals who completed the census, but not the w1 
-# survey. 6% of the total household population doesn't have a household wealth index
-# and are from data source 2 households, as opposed to only 1% of the household
-# population not having a household wealth index from data source 1 households.
-
 # NAME GENERATOR QUESTIONS:
 # 1. Who would you feel comfortable asking to borrow 200 lempiras from if you needed
 #    them for the day?
@@ -25,13 +19,13 @@ library(ggplot2)
 
 
 #--------------------- loading data ------------------------
-setwd("/home/stl22/palmer_scratch")
+setwd("/home/*")
 
 # Create a data path for saving cleaned / augmented data sets
-data_path <- "/home/stl22/palmer_scratch"
+data_path <- "/scratch"
 
 # Respondents data (original to have full village networks)
-load(paste(c(data_path, "/original_netwrks_resp_data_20230911.rda"), collapse=""))
+load(paste(c(data_path, "/original_netwrks_resp_data_*.rda"), collapse=""))
 
 # Subset data
 conn_w1 <- subset(conn_w1_original, alter_source==1 & village_code_w1!=0 & same_village==1 & same_building==0)
@@ -380,13 +374,13 @@ kstats_borrow_lend_diff_hh_undir_w3_df <- do.call(rbind, unlist(kcycle_list.borr
 #------------------------ saving data ---------------------------
 # Save data frame of network attributes
 save(vill_net_attr_borrow_lend_diff_hh_undir_w1_df, vill_net_attr_borrow_lend_diff_hh_undir_w3_df,
-     file = file.path(data_path, "vill_net_attr_borrow_lend_undir_w1w3_df_20240728.rda"))
+     file = file.path(data_path, "vill_net_attr_borrow_lend_undir_w1w3_df_*.rda"))
 
 # Save data frames of network features.
 save(kstats_borrow_lend_diff_hh_undir_w1_df, kstats_borrow_lend_diff_hh_undir_w3_df, 
-     file = file.path(data_path, "net_attr_borrow_lend_undir_ds2_w1w3_20240728.rda"))
+     file = file.path(data_path, "net_attr_borrow_lend_undir_ds2_w1w3_*.rda"))
 
 # Save hh borrow edge list and node list.
 save(nodelist_w1, borrow_lend_diff_hh_undir_edgelist_w1, nodelist_w3, borrow_lend_diff_hh_undir_edgelist_w3,
-     file = file.path(data_path, "borrow_lend_diff_hh_undir_edge_node_list_w1w3_20240728.rda"))
+     file = file.path(data_path, "borrow_lend_diff_hh_undir_edge_node_list_w1w3_*.rda"))
 
