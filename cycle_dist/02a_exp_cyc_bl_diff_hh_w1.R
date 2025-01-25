@@ -11,20 +11,18 @@ library(intergraph)
 library(ggplot2)
 
 #-------------------------- Load data --------------------------------
-setwd("/home/stl22/palmer_scratch")
+setwd("/scratch")
 
 # Create a data path for saving cleaned / augmented data sets
-data_path <- "/home/stl22/palmer_scratch"
+data_path <- "/scratch"
 
 # Load node / edge list for borrowing ties
-load(paste(c(data_path, "/borrow_lend_diff_hh_undir_edge_node_list_w1w3_20240728.rda"), collapse=""))
+load(paste(c(data_path, "/borrow_lend_diff_hh_undir_edge_node_list_w1w3_*.rda"), collapse=""))
 
 # Load generated network attributes to access kcycle prevalence per village
-load(paste(c(data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_20240728.rda"), collapse=""))
+load(paste(c(data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_*.rda"), collapse=""))
 
 #-------------- method 2: sample_degseq() -----------------
-# Example code from Yanick:
-# (where "com" is the network)
 # outd <- igraph::degree(com, mode = "out")
 # ind <- igraph::degree(com, mode = "in")
 #
@@ -139,10 +137,10 @@ borrow_lend_diff_hh_undir_cycdens_w1_sds <- as.data.frame(cyc_density)
 #------------------------ saving data ---------------------------
 # Saving cleaned data to data folder; saved files are ready for analysis.
 save(vil_indiv_w1_bl_diff_hh_kcy2, vil_indiv_w1_bl_diff_hh_kcy3, vil_indiv_w1_bl_diff_hh_kcy4, vil_indiv_w1_bl_diff_hh_kcy5,
-     file = "exp_cyc_bl_diff_hh_indiv_w1_20240728.rda")
+     file = "exp_cyc_bl_diff_hh_indiv_w1_*.rda")
 
 save(borrow_lend_diff_hh_undir_cycdens_w1_sds,
-     file = file.path(data_path, "cycdens_borrow_lend_diff_hh_undir_w1_20240728.rda"))
+     file = file.path(data_path, "cycdens_borrow_lend_diff_hh_undir_w1_*.rda"))
 
 # save(vil_hh_w1_sds_kcy2, vil_hh_w1_sds_kcy3, vil_hh_w1_sds_kcy4, vil_hh_w1_sds_kcy5,
-#      file = file.path(data_path, "exp_cycles_SDS_hh_w1_20240306.rda"))
+#      file = file.path(data_path, "exp_cycles_SDS_hh_w1_*.rda"))
