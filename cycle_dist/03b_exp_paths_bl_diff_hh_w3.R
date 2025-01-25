@@ -24,7 +24,7 @@ load(paste(c(data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_*.rda"), collapse=
 all_vill_w3_vec <- c(1:176)
 vill_w3_vec <- all_vill_w3_vec[!all_vill_w3_vec %in% c(155, 156)]
 
-vil_all_bl_diff_hh_kp2<-array(NA,dim=c(length(vill_w3_vec),50))
+#vil_all_bl_diff_hh_kp2<-array(NA,dim=c(length(vill_w3_vec),50))
 vil_all_bl_diff_hh_kp3<-array(NA,dim=c(length(vill_w3_vec),50))
 vil_all_bl_diff_hh_kp4<-array(NA,dim=c(length(vill_w3_vec),50))
 vil_all_bl_diff_hh_kp5<-array(NA,dim=c(length(vill_w3_vec),50))
@@ -48,7 +48,7 @@ for(j in 1:length(vill_w3_vec)){
                              path.comembership = "none", dyadic.tabulation = "none")
     # detach("package:sna", unload = TRUE)
     
-    vil_all_bl_diff_hh_kp2[j,kk] <- kpath_count$path.count[2,1]
+    #vil_all_bl_diff_hh_kp2[j,kk] <- kpath_count$path.count[2,1]
     vil_all_bl_diff_hh_kp3[j,kk] <- kpath_count$path.count[3,1]
     vil_all_bl_diff_hh_kp4[j,kk] <- kpath_count$path.count[4,1]
     vil_all_bl_diff_hh_kp5[j,kk] <- kpath_count$path.count[5,1]
@@ -59,11 +59,11 @@ for(j in 1:length(vill_w3_vec)){
 ### Path density
 # Data frame of the number of paths per village
 vil_all <- kstats_borrow_lend_diff_hh_undir_w3_df %>%
-  select(kpath2, kpath3, kpath4, kpath5) %>%
+  select(kpath3, kpath4, kpath5) %>%
   data.frame
 
 path_density<-array(NA,dim=c(length(vill_w3_vec),4))
-colnames(path_density)<-c("kpath2","kpath3","kpath4","kpath5")
+colnames(path_density)<-c("kpath3","kpath4","kpath5")
 
 for(j in 1:length(vill_w3_vec)){
   tempc<-mean(vil_all_bl_diff_hh_kp2[j,])
