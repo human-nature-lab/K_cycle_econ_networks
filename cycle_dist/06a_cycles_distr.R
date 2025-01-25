@@ -2,36 +2,33 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
-
 library(labelled)
 
 
 #--------------------- loading data ------------------------
-#setwd("/WORKAREA/work/HONDURAS_GATES/BORROWING")
-setwd("C:/Users/Shiv/Documents/Honduras/Kcycle and networks 04-19-23/kcycle_new_s/00_selena_final_code")
 # Create a data path for saving cleaned / augmented data sets
-data_path <- "00_data"
-borrow_data_path <- paste0(data_path, "/mccleary_output/borrow_lend")
-friend_data_path <- paste0(data_path, "/mccleary_output/friend")
+data_path <- "/ata"
+borrow_data_path <- paste0(data_path, "/output_bl")
+friend_data_path <- paste0(data_path, "/output_fr")
 figure_path <- paste0(data_path, "/figures")
 
 # Load raw expected cycles count (same degree distribution)
-load(paste0(borrow_data_path, "/exp_cyc_bl_diff_hh_indiv_w1_20240728.rda"))
-load(paste0(borrow_data_path, "/exp_cyc_bl_diff_hh_indiv_w3_20240728.rda"))
-load(paste0(friend_data_path, "/exp_cyc_indiv_friend_diff_hh_w1_20240728.rda"))
-load(paste0(friend_data_path, "/exp_cyc_indiv_friend_diff_hh_w3_20240728.rda"))
+load(paste0(borrow_data_path, "/exp_cyc_bl_diff_hh_indiv_w1_*.rda"))
+load(paste0(borrow_data_path, "/exp_cyc_bl_diff_hh_indiv_w3_*.rda"))
+load(paste0(friend_data_path, "/exp_cyc_indiv_friend_diff_hh_w1_*.rda"))
+load(paste0(friend_data_path, "/exp_cyc_indiv_friend_diff_hh_w3_*.rda"))
 
 # Load village-level data
-load(paste(c(data_path, "/vill_df_20230911.rda"), collapse=""))
-load(paste(c(data_path, "/gini_df_20240327.rda"), collapse=""))
+load(paste(c(data_path, "/vill_df_*.rda"), collapse=""))
+load(paste(c(data_path, "/gini_df_*.rda"), collapse=""))
 load(paste(c(data_path, "/wealth_measures_df_20240327.rda"), collapse=""))
 
 # Load network attributes data
-load(paste0(borrow_data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_20240728.rda"))
-load(paste0(friend_data_path, "/net_attr_friend_ds2_w1w3_20240728.rda"))
+load(paste0(borrow_data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_*.rda"))
+load(paste0(friend_data_path, "/net_attr_friend_ds2_w1w3_*.rda"))
 
 # # Load cyclic and path density measure for correlations (individual)
-# load(paste(c(data_path, "/03_merged_data/analysis_20240613.rda"), collapse=""))
+# load(paste(c(data_path, "/03_merged_data/analysis_*.rda"), collapse=""))
 
 
 #---------- distribution of raw cycles ----------------
@@ -261,7 +258,7 @@ ggplot(data = cyc_distr_sds_long_df,
   facet_wrap(~name_generator, labeller=network_names) +
   theme(text = element_text(size=15),axis.text.y = element_text(color="black"),axis.text.x = element_text(color="black"),panel.background=element_blank(),axis.line.x = element_line(color="black", size = 0.5),
         axis.line.y = element_line(color="black", size = 0.5),legend.position="none",plot.title = element_text(hjust = 0.3))
-ggsave("cyc_dist_zscore_sel_fig1.pdf",width=10,height=5)
+ggsave("cyc_dist_zscore_fig1.pdf",width=10,height=5)
 
 #kcy3 > expected
 
@@ -296,7 +293,7 @@ ggplot(data = cyc_distr_sds_long_df2,
   facet_wrap(~name_wave, labeller=network_waves,nrow=1) +
   theme(text = element_text(size=15),axis.text.y = element_text(color="black"),axis.text.x = element_text(color="black"),panel.background=element_blank(),axis.line.x = element_line(color="black", size = 0.5),
         axis.line.y = element_line(color="black", size = 0.5),legend.position="none",plot.title = element_text(hjust = 0.3))
-ggsave("cyc_dist_zscore_sel_wv.pdf",width=15,height=5)
+ggsave("cyc_dist_zscore_wv.pdf",width=15,height=5)
 
 temp<-cyc_distr_sds_long_df2
 length(which((temp$cyc_z_score>1.96)&(temp$cyc_length==3)&(temp$name_wave=="borrow_lend_1")))/length(which((temp$cyc_length==3)&(temp$name_wave=="borrow_lend_1")))
