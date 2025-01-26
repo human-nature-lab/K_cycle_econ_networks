@@ -11,17 +11,17 @@ library(intergraph)
 library(ggplot2)
 
 #-------------------------- Load data --------------------------------
-setwd("/home/stl22/palmer_scratch")
+setwd("/scratch")
 
 # Create a data path for saving cleaned / augmented data sets
-data_path <- "/home/stl22/palmer_scratch"
-save_data_path <- "/vast/palmer/scratch/christakis/stl22/output_data/02_undirected/friend/03_diff_hh"
+data_path <- "/scratch"
+save_data_path <- "*"
 
 # Load node / edge list for borrowing ties
-load(paste(c(data_path, "/friend_diff_hh_edge_node_list_w1w3_20240728.rda"), collapse=""))
+load(paste(c(data_path, "/friend_diff_hh_edge_node_list_w1w3_*.rda"), collapse=""))
 
 # Load generated network attributes to access kcycle prevalence per village
-load(paste(c(data_path, "/net_attr_friend_ds2_w1w3_20240728.rda"), collapse=""))
+load(paste(c(data_path, "/net_attr_friend_ds2_w1w3_*.rda"), collapse=""))
 
 #-------------- method 2: sample_degseq() -----------------
 # Example code from Yanick:
@@ -101,50 +101,15 @@ for(j in 1:176){
 
 friend_cycdens_w1_diff_hh <- as.data.frame(cyc_density)
 
-# #------------------ hh borrow lend network
-# ##Do 100 random villages per village
-# vc <- c(1:176)
-# 
-# vil_hh_w1_sds_kcy2<-array(NA,dim=c(length(vc),100))
-# vil_hh_w1_sds_kcy3<-array(NA,dim=c(length(vc),100))
-# vil_hh_w1_sds_kcy4<-array(NA,dim=c(length(vc),100))
-# vil_hh_w1_sds_kcy5<-array(NA,dim=c(length(vc),100))
-# 
-# library(sna, quietly = TRUE)
-# 
-# for(j in 1:176){
-#   edgelist_subset <- subset(hh_friend_edgelist_w1, village_code_w1==j)
-#   g <- graph_from_data_frame(edgelist_subset, directed=TRUE)
-#   g <- simplify(g)
-#   outd <- igraph::degree(g, mode = "out")
-#   ind <- igraph::degree(g, mode = "in")
-#   
-#   for(kk in 1:100) {
-#     sim <- sample_degseq(outd, ind, method = "simple.no.multiple")
-#     sim <- asNetwork(sim)
-#     # sim_adj = get.adjacency(sim,sparse=FALSE)
-#     
-#     
-#     apot.g=kcycle.census(sim, maxlen=5, mode = "digraph", tabulate.by.vertex =TRUE,
-#                          cycle.comembership = c("none"))
-#     # detach("package:sna", unload = TRUE)
-#     
-#     vil_hh_w1_sds_kcy2[j,kk] <- apot.g$cycle.count[1,1]
-#     vil_hh_w1_sds_kcy3[j,kk] <- apot.g$cycle.count[2,1]
-#     vil_hh_w1_sds_kcy4[j,kk] <- apot.g$cycle.count[3,1]
-#     vil_hh_w1_sds_kcy5[j,kk] <- apot.g$cycle.count[4,1]
-#   }
-# }
-
 
 #------------------------ saving data ---------------------------
 # Saving cleaned data to data folder; saved files are ready for analysis.
 save(vil_indiv_friend_w1_diff_hh_kcy2, vil_indiv_friend_w1_diff_hh_kcy3, 
      vil_indiv_friend_w1_diff_hh_kcy4, vil_indiv_friend_w1_diff_hh_kcy5,
-     file = file.path(save_data_path, "exp_cyc_indiv_friend_diff_hh_w1_20240728.rda"))
+     file = file.path(save_data_path, "exp_cyc_indiv_friend_diff_hh_w1_*.rda"))
 
 save(friend_cycdens_w1_diff_hh,
-     file = file.path(save_data_path, "cycdens_friend_diff_hh_w1_20240728.rda"))
+     file = file.path(save_data_path, "cycdens_friend_diff_hh_w1_*.rda"))
 
 # save(vil_hh_w1_sds_kcy2, vil_hh_w1_sds_kcy3, vil_hh_w1_sds_kcy4, vil_hh_w1_sds_kcy5,
 #      file = file.path(data_path, "exp_cycles_SDS_hh_w1_20240306.rda"))
