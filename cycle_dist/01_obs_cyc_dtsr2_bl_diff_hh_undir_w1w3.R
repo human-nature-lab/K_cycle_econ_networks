@@ -146,9 +146,8 @@ kstats_borrow_lend_diff_hh_undir_w1_df <- do.call(rbind, unlist(kcycle_list.borr
                             kpath5 = `5`))
 
 #-------------- 2: Borrow lend indiv networks (wave 3) -------------------
-# Create a vector of the villages we will use at wave 3 (exclude villages 155 and 156).
 all_vill_w3_vec <- c(1:176)
-vill_w3_vec <- all_vill_w3_vec[!all_vill_w3_vec %in% c(155, 156)]
+vill_w3_vec <- all_vill_w3_vec
 
 # Use the same node list as indiv networks using borrow and lend ties (nodelist_w3)
 nodelist_w3 <- conn_w3 %>%
