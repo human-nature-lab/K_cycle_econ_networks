@@ -36,7 +36,7 @@ load(paste(c(data_path, "/net_attr_borrow_lend_undir_ds2_w1w3_*.rda"), collapse=
 #------------ indiv borrow lend network
 ##Do 100 random villages per village
 all_vill_w3_vec <- c(1:176)
-vill_w3_vec <- all_vill_w3_vec[!all_vill_w3_vec %in% c(155, 156)]
+vill_w3_vec <- all_vill_w3_vec
 
 vil_indiv_w3_bl_diff_hh_kcy2<-array(NA,dim=c(length(vill_w3_vec),100))
 vil_indiv_w3_bl_diff_hh_kcy3<-array(NA,dim=c(length(vill_w3_vec),100))
