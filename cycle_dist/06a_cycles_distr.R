@@ -90,7 +90,7 @@ sds_cyc_distr_fr_w1 <- as.data.frame(cyc_z_score) %>%
 
 # For friend networks (w3):
 all_vill_w3_vec <- c(1:176)
-vill_w3_vec <- all_vill_w3_vec[!all_vill_w3_vec %in% c(155, 156)]
+vill_w3_vec <- all_vill_w3_vec
 
 vil_all <- kstats_friend_diff_hh_w3_df %>%
   select(kcycle3, kcycle4, kcycle5) %>%
