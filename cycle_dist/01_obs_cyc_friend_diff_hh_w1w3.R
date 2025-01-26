@@ -25,13 +25,13 @@ library(ggplot2)
 
 
 #--------------------- loading data ------------------------
-setwd("/home/stl22/palmer_scratch")
+setwd("/scratch")
 
 # Create a data path for saving cleaned / augmented data sets
-data_path <- "/home/stl22/palmer_scratch"
+data_path <- "/scratch"
 
 # Respondents data (original to have full village networks)
-load(paste(c(data_path, "/original_netwrks_resp_data_20230911.rda"), collapse=""))
+load(paste(c(data_path, "/original_netwrks_resp_data_*.rda"), collapse=""))
 
 # Subset data
 conn_w1 <- subset(conn_w1_original, alter_source==1 & village_code_w1!=0 & same_village==1)
@@ -152,9 +152,9 @@ kstats_friend_diff_hh_w1_df <- do.call(rbind, unlist(kcycle_list.friend, recursi
                             kpath5 = `5`))
 
 #-------------- 2: Friend indiv networks (wave 3) -------------------
-# Create a vector of the villages we will use at wave 3 (exclude villages 155 and 156).
+
 all_vill_w3_vec <- c(1:176)
-vill_w3_vec <- all_vill_w3_vec[!all_vill_w3_vec %in% c(155, 156)]
+vill_w3_vec <- all_vill_w3_vec
 
 # Use the same node list as indiv networks using borrow and lend ties (nodelist_w3)
 nodelist_w3 <- conn_w3 %>%
@@ -260,129 +260,18 @@ kstats_friend_diff_hh_w3_df <- do.call(rbind, unlist(kcycle_list.friend, recursi
                             kpath5 = `5`))
 
 
-# #---------------- 3: Borrow-lend hh networks (wave 1) ------------------
-# conn_w1_bldgid  <- conn_w1 %>%
-#   left_join(resp_w1_original %>%
-#               select(respondent_master_id,  building_id_w1),
-#             by = c("ego" = "respondent_master_id")) %>%
-#   select(-ego) %>%
-#   rename(ego = building_id_w1) %>%
-#   left_join(resp_w1_original %>%
-#               select(respondent_master_id, building_id_w1),
-#             by = c("alter" = "respondent_master_id")) %>%
-#   select(-alter)%>%
-#   rename(alter = building_id_w1)
-# 
-# hh_nodelist_w1 <- conn_w1_bldgid %>%
-#   select(ego, village_code_w1) %>%
-#   rename(node = ego) %>%
-#   bind_rows(conn_w1_bldgid %>%
-#               select(alter, village_code_w1) %>%
-#               rename(node = alter)) %>%
-#   distinct(node, .keep_all=TRUE) %>%
-#   rowid_to_column("id")
-# 
-# hh_friend_diff_hh_edgelist_w1 <- conn_w1_bldgid %>%
-#   subset(relationship=="trust_borrow_money") %>%
-#   bind_rows(conn_w1_bldgid %>%
-#               subset(relationship %in% c("trust_lend_money"),
-#                      select=c(alter, ego, relationship, village_code_w1)) %>%
-#               rename(ego = alter,
-#                      alter = ego)) %>%
-#   distinct(ego, alter, .keep_all = TRUE) %>%
-#   left_join(hh_nodelist_w1 %>%
-#               select(id, node), by =  c("ego" = "node")) %>%
-#   rename(from = id) %>%
-#   left_join(hh_nodelist_w1 %>%
-#               select(id, node), by = c("alter" = "node")) %>%
-#   rename(to = id) %>%
-#   distinct(from, to, .keep_all = TRUE) %>%
-#   subset(from != to) %>%
-#   select(from, to, village_code_w1)
-# 
-# # Pull network attributes
-# # Create list to hold village-level network statistics for each village
-# vill_net_attr_ls <- vector(mode = "list", length = 176)
-# 
-# for (i in 1:176) {
-#   edgelist_subset <- subset(hh_friend_diff_hh_edgelist_w1, village_code_w1==i)
-#   n <- graph_from_data_frame(edgelist_subset, directed=TRUE)
-#   n <- simplify(n)
-#   
-#   vill_net_attr_ls[[i]] <- data.frame(village_code = i,
-#                                       wave = "w1") %>%
-#     as_tibble %>%
-#     mutate(num_nodes = vcount(n),
-#            num_edges = ecount(n),
-#            diameter = diameter(n, directed = TRUE, unconnected = TRUE, weights = NULL),
-#            distance = mean_distance(n),
-#            ave_degree = num_edges / num_nodes,
-#            density = edge_density(n, loops=FALSE),
-#            transitivity = transitivity(n, type="global"),
-#            reciprocity = reciprocity(n, ignore.loops = TRUE))
-# }
-# 
-# vill_hh_net_attr_w1_df <- do.call(rbind, vill_net_attr_ls)
-# 
-# 
-# kcycle_list_hh.friend <- vector(mode = "list", length = 176)
-# 
-# for (i in 1:176) {
-#   edgelist_subset <- subset(hh_friend_diff_hh_edgelist_w1, village_code_w1==i)
-#   n <- graph_from_data_frame(edgelist_subset, directed=TRUE)
-#   n <- simplify(n)
-#   n <- asNetwork(n)
-#   
-#   kcycle_list_hh.friend[[i]] <- kcycle.census(n, maxlen = 5, mode = "digraph", 
-#                                               tabulate.by.vertex = FALSE, 
-#                                               cycle.comembership = "none")
-# }
-# 
-# # Initialize a list to hold kpath stats (village_level)
-# kpath_list_hh.friend <- vector(mode = "list", length = 176)
-# 
-# for (i in 1:176) {
-#   edgelist_subset <- subset(hh_friend_diff_hh_edgelist_w1, village_code_w1==i)
-#   n <- graph_from_data_frame(edgelist_subset, directed=TRUE)
-#   n <- simplify(n)
-#   n <- asNetwork(n)
-#   
-#   kpath_list_hh.friend[[i]] <- kpath.census(n, maxlen = 5, mode = "digraph", 
-#                                             tabulate.by.vertex = FALSE, 
-#                                             path.comembership = "none", 
-#                                             dyadic.tabulation = "none")
-# }
-# 
-# kstats_hh_friend_df <- do.call(rbind, unlist(kcycle_list_hh.friend, recursive=FALSE)) %>%
-#   as_tibble() %>%
-#   rowid_to_column("village_code") %>%
-#   remove_rownames() %>%
-#   dplyr::rename(kcycle2 = `2`,
-#                 kcycle3 = `3`,
-#                 kcycle4 = `4`,
-#                 kcycle5 = `5`) %>%
-#   cbind(relationship = 'borrow') %>%
-#   left_join(do.call(rbind, unlist(kpath_list_hh.friend, recursive = FALSE)) %>%
-#               as_tibble() %>%
-#               rowid_to_column("village_code") %>%
-#               remove_rownames() %>%
-#               dplyr::rename(kpath1 = `1`,
-#                             kpath2 = `2`,
-#                             kpath3 = `3`,
-#                             kpath4 = `4`,
-#                             kpath5 = `5`))
 
 
 #------------------------ saving data ---------------------------
 # Save data frame of network attributes
 save(vill_net_attr_friend_diff_hh_w1_df, vill_net_attr_friend_diff_hh_w3_df,
-     file = file.path(data_path, "vill_net_attr_friend_diff_hh_w1w3_df_20240728.rda"))
+     file = file.path(data_path, "vill_net_attr_friend_diff_hh_w1w3_df_*.rda"))
 
 # Save data frames of network features.
 save(kstats_friend_diff_hh_w1_df, kstats_friend_diff_hh_w3_df, 
-     file = file.path(data_path, "net_attr_friend_ds2_w1w3_20240728.rda"))
+     file = file.path(data_path, "net_attr_friend_ds2_w1w3_*.rda"))
 
 # Save hh borrow edge list and node list.
 save(nodelist_w1, friend_diff_hh_edgelist_w1, nodelist_w3, friend_diff_hh_edgelist_w3,
-     file = file.path(data_path, "friend_diff_hh_edge_node_list_w1w3_20240728.rda"))
+     file = file.path(data_path, "friend_diff_hh_edge_node_list_w1w3_*.rda"))
 
