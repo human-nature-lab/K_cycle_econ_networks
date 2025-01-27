@@ -1,6 +1,9 @@
 
 #Code written By Shivkumar Vishnempet Shridhar (contact @ shivkumar.vishnempet@yale.edu)
 #Paper with Selena Lee, Georgios Iosifidis, Yanick Charette, & Nicholas A. Christakis (23 Jan 2025)
+#This script is for 1)generating cycles and cyclic participation of every individual 2) Creating cycle composition scores for every individual
+#3) Investigating relaitonship between cycle particpation & cycle composition with individual wealth/gain in wealth.
+#This script is only for Frienship networks
 
 library(tidyverse)
 library(DescTools)
